@@ -58,9 +58,9 @@ int GameControl::startRound(std::shared_ptr<Player> P1, std::shared_ptr<Player> 
 
 		if (P1->mIsHumanPlayer || P2->mIsHumanPlayer) {
 			
-			std::string message = P1->getName() + " wählt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
+			std::string message = P1->getName() + " waehlt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
 			nUI.outputMessage(message);
-			message = P2->getName() + " wählt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
+			message = P2->getName() + " waehlt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
 			nUI.outputMessage(message);
 		}
 		
