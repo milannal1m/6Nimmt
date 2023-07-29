@@ -65,10 +65,10 @@ int GameControl::startRound(std::shared_ptr<Player> P1, std::shared_ptr<Player> 
 		}
 	}
 
-	if (P1->getCost() > P2->getCost()) {
+	if (P1->getCost() < P2->getCost()) {
 		return 1;
 	}
-	else if (P1->getCost() < P2->getCost()) {
+	else if (P1->getCost() > P2->getCost()) {
 		return 2;
 	}
 	else {
