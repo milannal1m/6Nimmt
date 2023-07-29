@@ -7,10 +7,13 @@
 class Player
 {
 public:
-	Player();
+	Player(Dealer RoundDealer);
 	~Player();
 	virtual GameCard chooseCard(std::shared_ptr<Field> matchField) = 0;
+	virtual int chooseRow(std::shared_ptr<Field> matchField) = 0;
 	bool mIsHumanPlayer;
+	void addCost(int cost);
+	int getCost();
 
 protected:
 	static int playerCount;
