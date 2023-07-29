@@ -14,6 +14,7 @@ public:
 	bool mIsHumanPlayer;
 	void addCost(int cost);
 	int getCost();
+	const std::string getName() const;
 
 protected:
 	static int playerCount;

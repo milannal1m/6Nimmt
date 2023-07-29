@@ -38,7 +38,7 @@ void UI::printField(std::shared_ptr<Field> PlayingField)
 		for (int m = 0; m < 6 - PlayingField->mPlayingField[i].size(); m++) {
 			std::cout << " |        | ";
 		}
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 }
 

@@ -24,3 +24,8 @@ int Player::getCost()
 	return mCost;
 }
 
+const std::string Player::getName() const
+{
+	return mName;
+}
+
