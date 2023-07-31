@@ -11,10 +11,10 @@ public:
 	UI();
 	~UI();
 
-	std::string userInput();
-	void outputMessage(std::string message);
-	void printField(std::shared_ptr<Field> PlayingField);
-	void printHand(std::vector<GameCard> mHand);
+	std::string userInput() const;
+	void outputMessage(std::string message) const;
+	void printField(std::shared_ptr<Field> PlayingField) const;
+	void printHand(std::vector<GameCard> mHand) const;
 
 };
 

@@ -1,18 +1,16 @@
 #pragma once
 #include "Player.h"
-#include "UI.h"
-#include <vector>
-#include <memory>
 
-
-class HumanPlayer :
+class ShortRowBot :
     public Player
 {
-public:
-    HumanPlayer(Dealer CardDealer);
-    ~HumanPlayer();
+public: 
+
+    ShortRowBot(Dealer CardDealer);
+    ~ShortRowBot();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;
     int chooseRow(std::shared_ptr<Field> matchField) const override;
 
 };
+

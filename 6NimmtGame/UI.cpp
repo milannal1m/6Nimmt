@@ -9,7 +9,7 @@ UI::~UI()
 {
 }
 
-std::string UI::userInput()
+std::string UI::userInput() const
 {
 
 	std::string output;
@@ -23,12 +23,12 @@ std::string UI::userInput()
 
 }
 
-void UI::outputMessage(std::string message)
+void UI::outputMessage(std::string message) const
 {
 	std::cout << message << std::endl;
 }
 
-void UI::printField(std::shared_ptr<Field> PlayingField)
+void UI::printField(std::shared_ptr<Field> PlayingField) const
 {
 
 	for (int i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ void UI::printField(std::shared_ptr<Field> PlayingField)
 	}
 }
 
-void UI::printHand(std::vector<GameCard> mHand)
+void UI::printHand(std::vector<GameCard> mHand) const
 {
 	int i = 0;
 

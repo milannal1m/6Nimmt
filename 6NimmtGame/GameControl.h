@@ -3,6 +3,7 @@
 #include <memory>
 #include "Player.h"
 #include "HumanPlayer.h"
+#include "ShortRowBot.h"
 #include "Dealer.h"
 
 class GameControl

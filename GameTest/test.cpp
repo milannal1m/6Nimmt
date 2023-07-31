@@ -2,6 +2,11 @@
 #include "GameCardCreator.h"
 #include "Dealer.h"
 #include <iostream>
+#include "Field.h"
+#include "GameControl.h"
+#include "Player.h"
+#include "ShortRowBot.h"
+#include <memory>
 
 
 TEST(TestGameCard, SmallerOperatorSortedByValue)
@@ -142,3 +147,101 @@ TEST(TestDealer, TestReset)
 	auto hundredFreshCards = dealer.Draw(100);
 	EXPECT_EQ(hundredFreshCards.size(), 100);
 }
+
+TEST(TestField, CostCount)
+{
+	Field matchField;
+
+	matchField.CreateMockedField({{{11,5,55,104},{3},{104,33,12,30},{44,50,100,6,12,45}}});
+
+	EXPECT_EQ(matchField.getCostOfRow(0), 15);
+	EXPECT_EQ(matchField.getCostOfRow(1), 1);
+	EXPECT_EQ(matchField.getCostOfRow(2), 10);
+	EXPECT_EQ(matchField.getCostOfRow(3), 15);
+
+}
+
+
+TEST(TestField, ResettingRows)
+{
+	Field matchField;
+
+	GameCard Card = {7,1};
+
+	matchField.CreateMockedField({{{11,5,55,104},{3},{104,33,12,30},{44,50,100,6,12,45}}});
+
+	matchField.resetRow(0,Card);
+
+	EXPECT_EQ(matchField.getPlayingField()[0].front().value, Card.value);
+	EXPECT_EQ(matchField.getPlayingField()[0].back().value, Card.value);
+
+}
+
+TEST(TestField, PlacingCard)
+{
+	Field matchField;
+
+	GameCard Card = { 7,1 };
+
+	matchField.CreateMockedField({ {{11,5,55,104},{3},{104,33,12,30},{44,50,100,6,12,45}} });
+
+	matchField.placeCard(1, Card);
+
+	EXPECT_EQ(matchField.getPlayingField()[1].back().value, Card.value);
+
+}
+
+TEST(TestGameControl, FindingTheCorrectRow)
+{
+	Field matchField;
+
+	GameControl Controller;
+
+	matchField.CreateMockedField({{{99},{34},{2},{104,5}}});
+
+	EXPECT_EQ(Controller.findCorrectRow(100,matchField.getPlayingField()), 0);
+	EXPECT_EQ(Controller.findCorrectRow(98, matchField.getPlayingField()), 1);
+	EXPECT_EQ(Controller.findCorrectRow(35, matchField.getPlayingField()), 1);
+	EXPECT_EQ(Controller.findCorrectRow(7, matchField.getPlayingField()), 3);
+	EXPECT_EQ(Controller.findCorrectRow(3, matchField.getPlayingField()), 2);
+	EXPECT_EQ(Controller.findCorrectRow(1, matchField.getPlayingField()), 5);
+	EXPECT_EQ(Controller.findCorrectRow(6, matchField.getPlayingField()), 3);
+
+	matchField.CreateMockedField({{{},{34},{},{104,5}}});
+
+	EXPECT_EQ(Controller.findCorrectRow(4, matchField.getPlayingField()), 0);
+	EXPECT_EQ(Controller.findCorrectRow(1, matchField.getPlayingField()), 0);
+	EXPECT_EQ(Controller.findCorrectRow(6, matchField.getPlayingField()), 3);
+	EXPECT_EQ(Controller.findCorrectRow(35, matchField.getPlayingField()), 1);
+
+}
+
+TEST(TestGameControl, CheckingForFullRow)
+{
+	Field matchField;
+
+	GameControl Controller;
+
+	matchField.CreateMockedField({ {{99,77,5,4,3},{34,3,44,12,18,29},{2},{104,5,6,4,3,2}} });
+
+	EXPECT_FALSE(Controller.isFullRow(0,matchField.getPlayingField()));
+	EXPECT_TRUE(Controller.isFullRow(1, matchField.getPlayingField()));
+	EXPECT_FALSE(Controller.isFullRow(2, matchField.getPlayingField()));
+	EXPECT_TRUE(Controller.isFullRow(3, matchField.getPlayingField()));
+
+
+}
+
+TEST(Bot, FindLowestCostRow)
+{
+	std::shared_ptr<Field> matchField;
+	Dealer CardDealer;
+	std::unique_ptr<Player> Bot(new ShortRowBot(CardDealer));
+
+	matchField->CreateMockedField({ {{99,77,5,4,3},{34,3,44,12,18,29},{2},{104,5,6,4,3,2}} });
+
+	EXPECT_EQ(Bot->findLowestCostRow(matchField), 2);
+
+
+}
+

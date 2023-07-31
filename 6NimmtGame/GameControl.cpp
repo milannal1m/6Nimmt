@@ -19,6 +19,8 @@ void GameControl::startGame()
 	nUI.outputMessage("Es gibt folgende Spieler:");
 	nUI.outputMessage("___________________________");
 	nUI.outputMessage("[1] Menschlicher Spieler");
+	nUI.outputMessage("___________________________");
+	nUI.outputMessage("[2] Short Row Bot");
 	nUI.outputMessage("___________________________\n\n");
 
 	std::shared_ptr<Player> P1 = initPlayer("1");
@@ -90,8 +92,8 @@ void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Field> matchFiel
 	int row = findCorrectRow(Card.value, matchField->getPlayingField());
 	int cost = 0;
 
-	if (row == -1) {
-		int row = P->chooseRow(matchField);
+	if (row == 5) {
+		row = P->chooseRow(matchField);
 		cost = matchField->getCostOfRow(row);
 		matchField->resetRow(row, Card);
 	}
@@ -107,19 +109,21 @@ void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Field> matchFiel
 
 int GameControl::findCorrectRow(int value, std::array<std::vector <GameCard>, 4> matchField)
 {
-	//returns the row in which the new Card belongs, returns -1 if the card doesnt fit any Row
+	//returns the row in which the new Card belongs, returns 5 if the card doesnt fit any Row
 
-	int currentRow = -1;
+	int currentRow = 5;
 	int currentDiff = 105;
 
 	for (int i = 0; i < 4; i++) {
 		if (matchField[i].size() == 0) {
-			return i;
+
+			if (i < currentRow) currentRow = i;
+
 		}
 		else if (matchField[i].back().value < value && value - matchField[i].back().value < currentDiff) {
 
 			currentDiff = value - matchField[i].back().value;
-			return i;
+			currentRow = i;
 		}
 	}
 	return currentRow;
@@ -154,9 +158,14 @@ std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 	if (mode == "1") {
 		std::shared_ptr<Player> P(new HumanPlayer(CardDealer));
 		return P;
+
+	}
+	else if (mode == "2") {
+		std::shared_ptr<Player> P(new ShortRowBot(CardDealer));
+		return P;
 	}
 	else {
-		nUI.outputMessage("Diesen Spieler gibt es nicht, versuchen wir es noch einmal.");
+		nUI.outputMessage("\nDiesen Modus gibt es nicht, versuchen wir es noch einmal.");
 		return initPlayer(number);
 	}
 }

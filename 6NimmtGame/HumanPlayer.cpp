@@ -47,7 +47,7 @@ GameCard HumanPlayer::chooseCard(std::shared_ptr<Field> matchField)
     }
 }
 
-int HumanPlayer::chooseRow(std::shared_ptr<Field> matchField)
+int HumanPlayer::chooseRow(std::shared_ptr<Field> matchField) const
 {
     UI nUI;
 
