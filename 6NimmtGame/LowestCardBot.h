@@ -1,13 +1,13 @@
 #pragma once
 #include "Player.h"
 
-class ShortRowBot :
+class LowestCardBot :
     public Player
 {
 public: 
 
-    ShortRowBot(Dealer CardDealer);
-    ~ShortRowBot();
+    LowestCardBot(Dealer CardDealer);
+    ~LowestCardBot();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;
     int chooseRow(std::shared_ptr<Field> matchField) const override;

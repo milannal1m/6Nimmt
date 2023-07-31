@@ -161,7 +161,7 @@ std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 
 	}
 	else if (mode == "2") {
-		std::shared_ptr<Player> P(new ShortRowBot(CardDealer));
+		std::shared_ptr<Player> P(new LowestCardBot(CardDealer));
 		return P;
 	}
 	else {

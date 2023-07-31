@@ -5,7 +5,7 @@
 #include "Field.h"
 #include "GameControl.h"
 #include "Player.h"
-#include "ShortRowBot.h"
+#include "LowestCardBot.h"
 #include <memory>
 
 
@@ -236,7 +236,7 @@ TEST(Bot, FindLowestCostRow)
 {
 	std::shared_ptr<Field> matchField;
 	Dealer CardDealer;
-	std::unique_ptr<Player> Bot(new ShortRowBot(CardDealer));
+	std::unique_ptr<Player> Bot(new LowestCardBot(CardDealer));
 
 	matchField->CreateMockedField({ {{99,77,5,4,3},{34,3,44,12,18,29},{2},{104,5,6,4,3,2}} });
 

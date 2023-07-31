@@ -45,7 +45,7 @@
     <ClInclude Include="HumanPlayer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ShortRowBot.h">
+    <ClInclude Include="LowestCardBot.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,8 +80,12 @@
     <ClCompile Include="HumanPlayer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ShortRowBot.cpp">
+    <ClCompile Include="LowestCardBot.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

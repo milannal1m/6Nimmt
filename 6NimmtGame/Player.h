@@ -12,7 +12,7 @@ public:
 
 	virtual GameCard chooseCard(std::shared_ptr<Field> matchField) = 0;
 	virtual int chooseRow(std::shared_ptr<Field> matchField) const = 0;
-	int findLowestCostRow(std::shared_ptr<Field> matchField) const;
+	int findCheapestRow(std::shared_ptr<Field> matchField) const;
 	void addCost(int cost);
 	int getCost() const;
 	const std::string getName() const;

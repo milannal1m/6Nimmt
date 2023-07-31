@@ -14,7 +14,7 @@ Player::~Player()
 {
 }
 
-int Player::findLowestCostRow(std::shared_ptr<Field> matchField) const
+int Player::findCheapestRow(std::shared_ptr<Field> matchField) const
 {
 	int lowestCostRow = 5;
 	int currentCost = 500;
