@@ -14,15 +14,21 @@ public:
 	~GameControl();
 
 	void startGame();
-	int startRound(std::shared_ptr<Player> P1, std::shared_ptr<Player> P2);
-	void placeCardLogic(GameCard Card, std::shared_ptr<Field> matchField, std::shared_ptr<Player> P);
-	int findCorrectRow(int value, std::array<std::vector <GameCard>, 4> matchField);
-	bool isFullRow(int row, std::array<std::vector <GameCard>, 4> matchField);
+	int startRound();
+	void placeCardLogic(GameCard Card, std::shared_ptr<Player> P);
+	int findCorrectRow(int value) const;
 	std::shared_ptr<Player> initPlayer(std::string number);
+	void initField();
 
 
 private:
 
+	const std::shared_ptr<Dealer> mCardDealer;
+	std::shared_ptr<Field> mMatchField;
+	const std::shared_ptr<UI> mUI;
+	std::shared_ptr<Player> Player1;
+	std::shared_ptr<Player> Player2;
 	int mCurrentRound;
 
+	friend class TestGameControl_FindingTheCorrectRow_Test;
 };

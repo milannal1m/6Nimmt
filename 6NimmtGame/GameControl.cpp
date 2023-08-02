@@ -1,9 +1,13 @@
-#include "pch.h"
+#include "pch.h" 
 #include "GameControl.h"
 
-GameControl::GameControl()
+GameControl::GameControl():
+	mUI(std::make_shared<UI>()),
+	mCardDealer(std::make_shared<Dealer>()),
+	mMatchField(std::make_shared<Field>())
 {
 	mCurrentRound = 0;
+
 }
 
 GameControl::~GameControl()
@@ -12,74 +16,77 @@ GameControl::~GameControl()
 
 void GameControl::startGame()
 {
-	UI nUI;
 
-	nUI.outputMessage("Willkommen bei 6 Nimmt a la Milan!");
-	nUI.outputMessage("___________________________");
-	nUI.outputMessage("Es gibt folgende Spieler:");
-	nUI.outputMessage("___________________________");
-	nUI.outputMessage("[1] Menschlicher Spieler");
-	nUI.outputMessage("___________________________");
-	nUI.outputMessage("[2] Short Row Bot");
-	nUI.outputMessage("___________________________\n\n");
 
-	std::shared_ptr<Player> P1 = initPlayer("1");
+	mUI->outputMessage("Willkommen bei 6 Nimmt a la Milan!");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("Es gibt folgende Spieler:");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[1] Menschlicher Spieler");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[2] Short Row Bot");
+	mUI->outputMessage("___________________________\n\n");
 
-	std::shared_ptr<Player> P2 = initPlayer("2");
+	Player1 = initPlayer("1");
 
-	int winner = startRound(P1, P2);
+	Player2 = initPlayer("2");
+
+	int winner = startRound();
 
 	if (winner == 1) {
-		nUI.outputMessage("Spieler 1 hat gewonnen.");
+		std::string message = Player1->getName() + " hat " + std::to_string(Player1->getCost()) + " zu " + std::to_string(Player2->getCost()) + " gewonnen.";
+		mUI->outputMessage(message);
 	}
 	else if (winner == 2) {
-		nUI.outputMessage("Spieler 2 hat gewonnen.");
+		std::string message = Player2->getName() + " hat " + std::to_string(Player2->getCost()) + " zu " + std::to_string(Player1->getCost()) + " gewonnen.";
+		mUI->outputMessage(message);
 	}
 	else {
-		nUI.outputMessage("Unentschieden");
+		mUI->outputMessage("Es ist unentschieden ausgegangen.");
 	}
 }
 
-int GameControl::startRound(std::shared_ptr<Player> P1, std::shared_ptr<Player> P2)
+int GameControl::startRound()
 {
 	// returning 1 means Player1 won, returning 2 means Player 2 won, returning 0 means there was a draw
+
+	initField();
+
 	mCurrentRound = 0;
-	std::shared_ptr<Field> matchField(new Field);
-	UI nUI;
 
 	while (mCurrentRound != 10) {
 
 		mCurrentRound++;
 
-		if(P1->mIsHumanPlayer || P2->mIsHumanPlayer){
-			nUI.printField(matchField);
+		if(Player1->mIsHumanPlayer || Player2->mIsHumanPlayer){
+			mUI->printField(mMatchField->getPlayingField());
 		}
 
-		GameCard FirstCard = P1->chooseCard(matchField);
-		GameCard SecondCard = P2->chooseCard(matchField);
+		GameCard FirstCard = Player1->chooseCard(mMatchField);
+		GameCard SecondCard = Player2->chooseCard(mMatchField);
 
-		if (P1->mIsHumanPlayer || P2->mIsHumanPlayer) {
+		if (Player1->mIsHumanPlayer || Player2->mIsHumanPlayer) {
 			
-			std::string message = P1->getName() + " waehlt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
-			nUI.outputMessage(message);
-			message = P2->getName() + " waehlt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
-			nUI.outputMessage(message);
+			std::string message = Player1->getName() + " waehlt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
+			mUI->outputMessage(message);
+			message = Player2->getName() + " waehlt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
+			mUI->outputMessage(message);
 		}
 		
 		if (FirstCard.value < SecondCard.value) {
-			placeCardLogic(FirstCard, matchField, P1);
-			placeCardLogic(SecondCard, matchField, P2);
+			placeCardLogic(FirstCard, Player1);
+			placeCardLogic(SecondCard, Player2);
 		}
 		else {
-			placeCardLogic(SecondCard, matchField, P2);
-			placeCardLogic(FirstCard, matchField, P1);
+			placeCardLogic(SecondCard, Player2);
+			placeCardLogic(FirstCard, Player1);
 		}
 	}
 
-	if (P1->getCost() < P2->getCost()) {
+	if (Player1->getCost() < Player2->getCost()) {
 		return 1;
 	}
-	else if (P1->getCost() > P2->getCost()) {
+	else if (Player1->getCost() > Player2->getCost()) {
 		return 2;
 	}
 	else {
@@ -87,32 +94,34 @@ int GameControl::startRound(std::shared_ptr<Player> P1, std::shared_ptr<Player> 
 	}
 }
 
-void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Field> matchField, std::shared_ptr<Player> P)
+void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Player> P)
 {
-	int row = findCorrectRow(Card.value, matchField->getPlayingField());
+	int row = findCorrectRow(Card.value);
 	int cost = 0;
 
 	if (row == 5) {
-		row = P->chooseRow(matchField);
-		cost = matchField->getCostOfRow(row);
-		matchField->resetRow(row, Card);
+		row = P->chooseRow(mMatchField);
+		cost = mMatchField->getCostOfRow(row);
+		mMatchField->resetRow(row, Card);
 	}
 	else {
-		matchField->placeCard(row, Card);
-		if (isFullRow(row, matchField->getPlayingField())) {
-			cost = matchField->getCostOfRow(row);
-			matchField->resetRow(row, Card);
+		mMatchField->placeCard(row, Card);
+		if (mMatchField->isFullRow(row)) {
+			cost = mMatchField->getCostOfRow(row)-Card.cost;
+			mMatchField->resetRow(row, Card);
 		}
 	}
 	P->addCost(cost);
 }
 
-int GameControl::findCorrectRow(int value, std::array<std::vector <GameCard>, 4> matchField)
+int GameControl::findCorrectRow(int value) const
 {
 	//returns the row in which the new Card belongs, returns 5 if the card doesnt fit any Row
 
 	int currentRow = 5;
 	int currentDiff = 105;
+
+	std::array<std::vector <GameCard>, 4> matchField = mMatchField->getPlayingField();
 
 	for (int i = 0; i < 4; i++) {
 		if (matchField[i].size() == 0) {
@@ -129,43 +138,40 @@ int GameControl::findCorrectRow(int value, std::array<std::vector <GameCard>, 4>
 	return currentRow;
 }
 
-bool GameControl::isFullRow(int row, std::array<std::vector<GameCard>, 4> matchField)
-{
-
-		if (matchField[row].size() == 6) {
-
-			return true;
-
-		}
-		else {
-			return false;
-		}
-}
-
 
 std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 {
-	UI nUI;
-	Dealer CardDealer;
 	std::string mode;
 	std::string message;
 	message = "Spieler" + number;
 
-	nUI.outputMessage(message);
-	nUI.outputMessage("Welchen Modus soll dein Spieler haben?");
-	mode = nUI.userInput();
+	mUI->outputMessage(message);
+	mUI->outputMessage("Welchen Modus soll dein Spieler haben?");
+	mode = mUI->userInput();
 
 	if (mode == "1") {
-		std::shared_ptr<Player> P(new HumanPlayer(CardDealer));
+		std::shared_ptr<Player> P(new HumanPlayer(mCardDealer));
 		return P;
 
 	}
 	else if (mode == "2") {
-		std::shared_ptr<Player> P(new LowestCardBot(CardDealer));
+		std::shared_ptr<Player> P(new LowestCardBot(mCardDealer));
 		return P;
 	}
 	else {
-		nUI.outputMessage("\nDiesen Modus gibt es nicht, versuchen wir es noch einmal.");
+		mUI->outputMessage("\nDiesen Modus gibt es nicht, versuchen wir es noch einmal.");
 		return initPlayer(number);
 	}
 }
+
+void GameControl::initField()
+{
+	mMatchField->clearField();
+
+	std::vector <GameCard> initCards = mCardDealer->Draw(4);
+
+	for (int i = 0; i < 4; i++) {
+		mMatchField->placeCard(i, initCards[i]);
+	}
+}
+

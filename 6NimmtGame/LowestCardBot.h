@@ -6,7 +6,7 @@ class LowestCardBot :
 {
 public: 
 
-    LowestCardBot(Dealer CardDealer);
+    LowestCardBot(std::shared_ptr<Dealer> CardDealer);
     ~LowestCardBot();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;

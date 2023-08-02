@@ -28,14 +28,14 @@ void UI::outputMessage(std::string message) const
 	std::cout << message << std::endl;
 }
 
-void UI::printField(std::shared_ptr<Field> PlayingField) const
+void UI::printField(std::array<std::vector <GameCard>, 4> PlayingField) const
 {
 
 	for (int i = 0; i < 4; i++) {
-		for (const GameCard &Card: PlayingField->mPlayingField[i]) {
+		for (const GameCard &Card: PlayingField[i]) {
 			std::cout << " |  " << (int) Card.value << "(" << (int) Card.cost << ")" << "  | ";
 		}
-		for (int m = 0; m < 6 - PlayingField->mPlayingField[i].size(); m++) {
+		for (int m = 0; m < 6 - PlayingField[i].size(); m++) {
 			std::cout << " |        | ";
 		}
 		std::cout << std::endl << std::endl;

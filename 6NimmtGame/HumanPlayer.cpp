@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "HumanPlayer.h"
 
-HumanPlayer::HumanPlayer(Dealer CardDealer):Player(CardDealer)
+HumanPlayer::HumanPlayer(std::shared_ptr<Dealer> CardDealer):Player(CardDealer),
+    mUI(std::make_shared<UI>())
 {
-    UI nUI;
-
-    nUI.outputMessage("\nWie lautet dein Name?");
-    mName = nUI.userInput();
-    nUI.outputMessage("\n");
+    mUI->outputMessage("\nWie lautet dein Name?");
+    mName = mUI->userInput();
+    mUI->outputMessage("\n");
     mIsHumanPlayer = true;
 }
 
@@ -17,52 +16,51 @@ HumanPlayer::~HumanPlayer()
 
 GameCard HumanPlayer::chooseCard(std::shared_ptr<Field> matchField)
 {
-    UI nUI;
     
-    nUI.outputMessage("\nDein Deck:");
-    nUI.printHand(mHand);
+    mUI->outputMessage("\nDein Deck:");
+    mUI->printHand(mHand);
     std::string message = mName + "(" + std::to_string(mCost) + ")" + ", waehle eine Karte aus.";
-    nUI.outputMessage(message);
+    mUI->outputMessage(message);
 
-    std::string input = nUI.userInput();
-    nUI.outputMessage("");
+    std::string input = mUI->userInput();
+    mUI->outputMessage("");
 
     if (isdigit(input[0])) {
         int cardIndex = stoi(input)-1;
-        if (cardIndex <= mHand.size()) {
+        if (cardIndex <= mHand.size()-1) {
             GameCard chosenGameCard = mHand[cardIndex];
             mHand.erase(mHand.begin() + cardIndex);
 
             return chosenGameCard;
         }
         else {
-            nUI.outputMessage("Diese Karte gibt es leider nicht.");
+            mUI->outputMessage("Diese Karte gibt es leider nicht.");
             return chooseCard(matchField);
         }
         
     }
     else {
-        nUI.outputMessage("Das war leider keine Zahl.");
+        mUI->outputMessage("Das war leider keine Zahl.");
         return chooseCard(matchField);
     }
 }
 
 int HumanPlayer::chooseRow(std::shared_ptr<Field> matchField) const
 {
-    UI nUI;
+   
 
     std::string message = mName + ", deine Karte passt leider in keine Reihe.";
 
-    nUI.outputMessage(message);
-    nUI.outputMessage("Nun musst du dir eine Reihe (1-4) aussuchen von der du alle Hornochsen eintuetest.");
-    std::string input = nUI.userInput();
+    mUI->outputMessage(message);
+    mUI->outputMessage("Nun musst du dir eine Reihe (1-4) aussuchen von der du alle Hornochsen eintuetest.");
+    std::string input = mUI->userInput();
 
     if (isdigit(input[0]) && stoi(input) < 5) {
 
         return stoi(input) - 1;
     }
     else {
-        nUI.outputMessage("Diese Reihe gibt es nicht.");
+        mUI->outputMessage("Diese Reihe gibt es nicht.");
         return chooseRow(matchField);
     }
 }

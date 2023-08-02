@@ -13,7 +13,7 @@ public:
 
 	std::string userInput() const;
 	void outputMessage(std::string message) const;
-	void printField(std::shared_ptr<Field> PlayingField) const;
+	void printField(std::array<std::vector <GameCard>, 4> PlayingField) const;
 	void printHand(std::vector<GameCard> mHand) const;
 
 };

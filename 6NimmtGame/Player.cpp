@@ -3,15 +3,16 @@
 
 int Player::mPlayerCount = 0;
 
-Player::Player(Dealer CardDealer)
+Player::Player(std::shared_ptr<Dealer> CardDealer)
 {
 	mPlayerCount++;
-	mHand = CardDealer.Draw(10);
+	mHand = CardDealer->Draw(10);
 	mCost = 0;
 }
 
 Player::~Player()
 {
+	mHand.clear();
 }
 
 int Player::findCheapestRow(std::shared_ptr<Field> matchField) const

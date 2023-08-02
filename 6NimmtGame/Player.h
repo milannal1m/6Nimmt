@@ -7,7 +7,7 @@
 class Player
 {
 public:
-	Player(Dealer RoundDealer);
+	Player(std::shared_ptr<Dealer> CardDealer);
 	~Player();
 
 	virtual GameCard chooseCard(std::shared_ptr<Field> matchField) = 0;

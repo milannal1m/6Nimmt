@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LowestCardBot.h"
 
-LowestCardBot::LowestCardBot(Dealer CardDealer):Player(CardDealer)
+LowestCardBot::LowestCardBot(std::shared_ptr<Dealer> CardDealer):Player(CardDealer)
 {
 	mName = "ShortRowBot" + mPlayerCount;
 }

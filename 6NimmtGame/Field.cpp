@@ -4,12 +4,12 @@
 
 Field::Field()
 {
-	
+
 }
 
 Field::~Field()
 {
-	
+	clearField();
 }
 
 void Field::CreateMockedField(std::array<std::vector <int>, 4> mockedPlayingField)
@@ -55,5 +55,24 @@ void Field::resetRow(int row, GameCard NewCard)
 {
 	mPlayingField[row].clear();
 	mPlayingField[row].push_back(NewCard);
+}
+
+void Field::clearField()
+{
+	for (int i = 0; i < 4; i++) {
+		mPlayingField[i].clear();
+	}
+}
+
+bool Field::isFullRow(int row)
+{
+	if (mPlayingField[row].size() == 6) {
+
+		return true;
+
+	}
+	else {
+		return false;
+	}
 }
 
