@@ -47,3 +47,9 @@ const std::string Player::getName() const
 	return mName;
 }
 
+void Player::createMockedHand(std::vector<GameCard> Hand)
+{
+	mHand.clear();
+	mHand = Hand;
+}
+

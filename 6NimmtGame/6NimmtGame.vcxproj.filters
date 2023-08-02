@@ -48,6 +48,12 @@
     <ClInclude Include="LowestCardBot.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="HighestCardBot.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomBot.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="6NimmtGame.cpp">
@@ -81,6 +87,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="LowestCardBot.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HighestCardBot.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomBot.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

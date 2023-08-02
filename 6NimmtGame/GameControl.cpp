@@ -24,7 +24,11 @@ void GameControl::startGame()
 	mUI->outputMessage("___________________________");
 	mUI->outputMessage("[1] Menschlicher Spieler");
 	mUI->outputMessage("___________________________");
-	mUI->outputMessage("[2] Short Row Bot");
+	mUI->outputMessage("[2] Lowest Card Bot");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[3] Highest Card Bot");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[4] Random Card Bot");
 	mUI->outputMessage("___________________________\n\n");
 
 	Player1 = initPlayer("1");
@@ -67,9 +71,9 @@ int GameControl::startRound()
 
 		if (Player1->mIsHumanPlayer || Player2->mIsHumanPlayer) {
 			
-			std::string message = Player1->getName() + " waehlt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
+			std::string message = Player1->getName() +"(" + std::to_string(Player1->getCost()) + ")" + " waehlt die Karte " + std::to_string(FirstCard.value) + "(" + std::to_string(FirstCard.cost) + ")\n";
 			mUI->outputMessage(message);
-			message = Player2->getName() + " waehlt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
+			message = Player2->getName() +"(" + std::to_string(Player2->getCost()) + ")" + " waehlt die Karte " + std::to_string(SecondCard.value) + "(" + std::to_string(SecondCard.cost) + ")\n";
 			mUI->outputMessage(message);
 		}
 		
@@ -156,6 +160,14 @@ std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 	}
 	else if (mode == "2") {
 		std::shared_ptr<Player> P(new LowestCardBot(mCardDealer));
+		return P;
+	}
+	else if (mode == "3") {
+		std::shared_ptr<Player> P(new HighestCardBot(mCardDealer));
+		return P;
+	}
+	else if (mode == "4") {
+		std::shared_ptr<Player> P(new RandomBot(mCardDealer));
 		return P;
 	}
 	else {

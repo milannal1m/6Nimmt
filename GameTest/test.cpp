@@ -6,6 +6,7 @@
 #include "GameControl.h"
 #include "Player.h"
 #include "LowestCardBot.h"
+#include "HighestCardBot.h"
 #include <memory>
 
 
@@ -231,10 +232,10 @@ TEST(TestGameControl, FindingTheCorrectRow)
 
 }
 
-TEST(Bot, FindLowestCostRow)
+TEST(Bot, FindCheapestRow)
 {
-	std::shared_ptr<Field> matchField;
-	std::shared_ptr<Dealer> CardDealer;
+	std::shared_ptr<Field> matchField(new Field);
+	std::shared_ptr<Dealer> CardDealer(new Dealer);
 	std::unique_ptr<Player> Bot(new LowestCardBot(CardDealer));
 
 	matchField->CreateMockedField({ {{99,77,5,4,3},{34,3,44,12,18,29},{2},{104,5,6,4,3,2}} });
@@ -243,3 +244,27 @@ TEST(Bot, FindLowestCostRow)
 
 }
 
+TEST(LowestCardBot, PlaceCard) 
+{
+	std::shared_ptr<Dealer> CardDealer(new Dealer);
+	std::unique_ptr<Player> Bot(new LowestCardBot(CardDealer));
+	std::shared_ptr<Field> matchField(new Field);
+
+	Bot->createMockedHand({ {1,1},{104,1},{55,7} });
+
+	EXPECT_EQ(Bot->chooseCard(matchField).value,1);
+	EXPECT_EQ(Bot->mHand[0].value, 104);
+
+}
+
+TEST(HighestCardBot, PlaceCard)
+{
+	std::shared_ptr<Dealer> CardDealer(new Dealer);
+	std::unique_ptr<Player> Bot(new HighestCardBot(CardDealer));
+	std::shared_ptr<Field> matchField(new Field);
+
+	Bot->createMockedHand({ {1,1},{104,1},{55,7} });
+
+	EXPECT_EQ(Bot->chooseCard(matchField).value, 104);
+	EXPECT_EQ(Bot->mHand[0].value, 1);
+}

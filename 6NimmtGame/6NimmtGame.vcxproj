@@ -145,10 +145,12 @@
     <ClInclude Include="GameCard.h" />
     <ClInclude Include="GameCardCreator.h" />
     <ClInclude Include="GameControl.h" />
+    <ClInclude Include="HighestCardBot.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="LowestCardBot.h" />
+    <ClInclude Include="RandomBot.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +160,7 @@
     <ClCompile Include="GameCard.cpp" />
     <ClCompile Include="GameCardCreator.cpp" />
     <ClCompile Include="GameControl.cpp" />
+    <ClCompile Include="HighestCardBot.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -167,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="LowestCardBot.cpp" />
+    <ClCompile Include="RandomBot.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 #include <memory>
 #include "Field.h"
 #include "Dealer.h"
+#include "GameCard.h"
 
 class Player
 {
@@ -16,6 +17,7 @@ public:
 	void addCost(int cost);
 	int getCost() const;
 	const std::string getName() const;
+	void createMockedHand(std::vector<GameCard> Hand);
 
 	bool mIsHumanPlayer;
 
@@ -25,5 +27,7 @@ protected:
 	std::vector<GameCard> mHand;
 	int mCost;
 
+	friend class LowestCardBot_PlaceCard_Test;
+	friend class HighestCardBot_PlaceCard_Test;
 };
 

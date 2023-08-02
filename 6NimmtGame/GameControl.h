@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "HumanPlayer.h"
 #include "LowestCardBot.h"
+#include "HighestCardBot.h"
+#include "RandomBot.h"
 #include "Dealer.h"
 
 class GameControl
