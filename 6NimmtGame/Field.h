@@ -20,6 +20,7 @@ public:
 	void resetRow(int row, GameCard NewCard);
 	void clearField();
 	bool isFullRow(int row);
+	int findCorrectRow(int value) const;
 
 private:
 	std::array<std::vector <GameCard>,4> mPlayingField;

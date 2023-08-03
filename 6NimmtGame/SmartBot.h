@@ -3,14 +3,19 @@
 #include <random>
 #include <ctime>
 
-class RandomBot :
+class SmartBot :
     public Player
 {
 public:
-    RandomBot();
-    ~RandomBot();
+    SmartBot();
+    ~SmartBot();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;
     int chooseRow(std::shared_ptr<Field> matchField) const override;
+    void removeCardsThatLeadToCost(std::shared_ptr<Field> matchField);
+
+
+private:
+    std::vector<GameCard> mGoodCardsInHand;
 };
 

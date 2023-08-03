@@ -151,6 +151,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="LowestCardBot.h" />
     <ClInclude Include="RandomBot.h" />
+    <ClInclude Include="SmartBot.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="LowestCardBot.cpp" />
     <ClCompile Include="RandomBot.cpp" />
+    <ClCompile Include="SmartBot.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>

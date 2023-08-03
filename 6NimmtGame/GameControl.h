@@ -7,6 +7,7 @@
 #include "HighestCardBot.h"
 #include "RandomBot.h"
 #include "Dealer.h"
+#include "SmartBot.h"
 
 class GameControl
 {
@@ -18,10 +19,8 @@ public:
 	void startGame();
 	int startRound();
 	void placeCardLogic(GameCard Card, std::shared_ptr<Player> P);
-	int findCorrectRow(int value) const;
 	std::shared_ptr<Player> initPlayer(std::string number);
 	void initField();
-
 
 private:
 
@@ -33,4 +32,7 @@ private:
 	int mCurrentRound;
 
 	friend class TestGameControl_FindingTheCorrectRow_Test;
+	friend class BotvBot_SmartvHigh_Test;
+	friend class BotvBot_SmartvLow_Test;
+	friend class BotvBot_SmartvRand_Test;
 };

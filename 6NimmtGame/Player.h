@@ -8,7 +8,7 @@
 class Player
 {
 public:
-	Player(std::shared_ptr<Dealer> CardDealer);
+	Player();
 	~Player();
 
 	virtual GameCard chooseCard(std::shared_ptr<Field> matchField) = 0;
@@ -19,7 +19,7 @@ public:
 	const std::string getName() const;
 	void createMockedHand(std::vector<GameCard> Hand);
 
-	bool mIsHumanPlayer;
+	bool mIsHumanPlayer = 0;
 
 protected:
 	static int mPlayerCount;
@@ -29,5 +29,6 @@ protected:
 
 	friend class LowestCardBot_PlaceCard_Test;
 	friend class HighestCardBot_PlaceCard_Test;
+	friend class TestSmartBot_DeleteBadCards_Test;
 };
 

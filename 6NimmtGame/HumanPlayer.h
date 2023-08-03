@@ -9,7 +9,7 @@ class HumanPlayer :
     public Player
 {
 public:
-    HumanPlayer(std::shared_ptr<Dealer> CardDealer);
+    HumanPlayer();
     ~HumanPlayer();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;

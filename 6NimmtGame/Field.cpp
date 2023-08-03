@@ -76,3 +76,24 @@ bool Field::isFullRow(int row)
 	}
 }
 
+int Field::findCorrectRow(int value) const
+{
+	//returns the row in which the new Card belongs, returns 5 if the card doesnt fit any Row
+
+	int currentRow = 5;
+	int currentDiff = 105;
+
+	for (int i = 0; i < 4; i++) {
+		if (mPlayingField[i].size() == 0) {
+
+			if (i < currentRow) currentRow = i;
+
+		}
+		else if (mPlayingField[i].back().value < value && value - mPlayingField[i].back().value < currentDiff) {
+
+			currentDiff = value - mPlayingField[i].back().value;
+			currentRow = i;
+		}
+	}
+	return currentRow;
+}

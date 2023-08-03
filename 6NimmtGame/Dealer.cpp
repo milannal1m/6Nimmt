@@ -22,7 +22,10 @@ std::vector<GameCard> Dealer::Draw(int numberOfCards)
     {
         return ExecuteDraw(numberOfCards);
     }
-    return std::vector<GameCard>();
+    else {
+        Reset();
+        return Draw(numberOfCards);
+    }
 }
 
 

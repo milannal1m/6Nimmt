@@ -29,6 +29,8 @@ void GameControl::startGame()
 	mUI->outputMessage("[3] Highest Card Bot");
 	mUI->outputMessage("___________________________");
 	mUI->outputMessage("[4] Random Card Bot");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[5] Smart Bot");
 	mUI->outputMessage("___________________________\n\n");
 
 	Player1 = initPlayer("1");
@@ -55,6 +57,9 @@ int GameControl::startRound()
 	// returning 1 means Player1 won, returning 2 means Player 2 won, returning 0 means there was a draw
 
 	initField();
+
+	Player1->createMockedHand(mCardDealer->Draw(10));
+	Player2->createMockedHand(mCardDealer->Draw(10));
 
 	mCurrentRound = 0;
 
@@ -100,7 +105,7 @@ int GameControl::startRound()
 
 void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Player> P)
 {
-	int row = findCorrectRow(Card.value);
+	int row = mMatchField->findCorrectRow(Card.value);
 	int cost = 0;
 
 	if (row == 5) {
@@ -118,31 +123,6 @@ void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Player> P)
 	P->addCost(cost);
 }
 
-int GameControl::findCorrectRow(int value) const
-{
-	//returns the row in which the new Card belongs, returns 5 if the card doesnt fit any Row
-
-	int currentRow = 5;
-	int currentDiff = 105;
-
-	std::array<std::vector <GameCard>, 4> matchField = mMatchField->getPlayingField();
-
-	for (int i = 0; i < 4; i++) {
-		if (matchField[i].size() == 0) {
-
-			if (i < currentRow) currentRow = i;
-
-		}
-		else if (matchField[i].back().value < value && value - matchField[i].back().value < currentDiff) {
-
-			currentDiff = value - matchField[i].back().value;
-			currentRow = i;
-		}
-	}
-	return currentRow;
-}
-
-
 std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 {
 	std::string mode;
@@ -154,20 +134,24 @@ std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 	mode = mUI->userInput();
 
 	if (mode == "1") {
-		std::shared_ptr<Player> P(new HumanPlayer(mCardDealer));
+		std::shared_ptr<Player> P(new HumanPlayer());
 		return P;
 
 	}
 	else if (mode == "2") {
-		std::shared_ptr<Player> P(new LowestCardBot(mCardDealer));
+		std::shared_ptr<Player> P(new LowestCardBot());
 		return P;
 	}
 	else if (mode == "3") {
-		std::shared_ptr<Player> P(new HighestCardBot(mCardDealer));
+		std::shared_ptr<Player> P(new HighestCardBot());
 		return P;
 	}
 	else if (mode == "4") {
-		std::shared_ptr<Player> P(new RandomBot(mCardDealer));
+		std::shared_ptr<Player> P(new RandomBot());
+		return P;
+	}
+	else if (mode == "5") {
+		std::shared_ptr<Player> P(new SmartBot());
 		return P;
 	}
 	else {

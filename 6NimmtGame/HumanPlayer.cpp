@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HumanPlayer.h"
 
-HumanPlayer::HumanPlayer(std::shared_ptr<Dealer> CardDealer):Player(CardDealer),
+HumanPlayer::HumanPlayer():Player(),
     mUI(std::make_shared<UI>())
 {
     mUI->outputMessage("\nWie lautet dein Name?");

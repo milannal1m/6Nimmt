@@ -2,9 +2,10 @@
 #include "RandomBot.h"
 
 
-RandomBot::RandomBot(std::shared_ptr<Dealer> CardDealer):Player(CardDealer)
+RandomBot::RandomBot():Player()
 {
 	mName = "RandomBot" + std::to_string(mPlayerCount);
+	mIsHumanPlayer = false;
 }
 
 RandomBot::~RandomBot()

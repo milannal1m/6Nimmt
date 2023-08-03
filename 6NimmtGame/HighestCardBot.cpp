@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "HighestCardBot.h"
 
-HighestCardBot::HighestCardBot(std::shared_ptr<Dealer> CardDealer):Player(CardDealer)
+HighestCardBot::HighestCardBot():Player()
 {
 	mName = "HighestCardBot" + std::to_string(mPlayerCount);
+	mIsHumanPlayer = false;
 }
 
 HighestCardBot::~HighestCardBot()
@@ -17,7 +18,7 @@ GameCard HighestCardBot::chooseCard(std::shared_ptr<Field> matchField)
 
 		if (HighestCard < Card)HighestCard = Card;
 	}
-	mHand.erase(std::remove(mHand.begin(), mHand.end(), HighestCard));
+	mHand.erase(std::remove(mHand.begin(), mHand.end(), HighestCard),mHand.end());
 	return HighestCard;
 }
 

@@ -3,10 +3,9 @@
 
 int Player::mPlayerCount = 0;
 
-Player::Player(std::shared_ptr<Dealer> CardDealer)
+Player::Player()
 {
 	mPlayerCount++;
-	mHand = CardDealer->Draw(10);
 	mCost = 0;
 }
 

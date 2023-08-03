@@ -5,7 +5,7 @@ class HighestCardBot :
 {
 public:
 
-    HighestCardBot(std::shared_ptr<Dealer> CardDealer);
+    HighestCardBot();
     ~HighestCardBot();
 
     GameCard chooseCard(std::shared_ptr<Field> matchField) override;

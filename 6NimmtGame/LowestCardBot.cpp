@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "LowestCardBot.h"
 
-LowestCardBot::LowestCardBot(std::shared_ptr<Dealer> CardDealer):Player(CardDealer)
+LowestCardBot::LowestCardBot():Player()
 {
 	mName = "LowestCardBot" + std::to_string(mPlayerCount);
+	mIsHumanPlayer = false;
 }
 
 LowestCardBot::~LowestCardBot()
@@ -17,7 +18,7 @@ GameCard LowestCardBot::chooseCard(std::shared_ptr<Field> matchField)
 		
 		if (Card < LowestCard)LowestCard = Card;
 	}
-	mHand.erase(std::remove(mHand.begin(), mHand.end(), LowestCard));
+	mHand.erase(std::remove(mHand.begin(), mHand.end(), LowestCard),mHand.end());
 	return LowestCard;
 }
 
