@@ -197,7 +197,7 @@ TEST(TestField, FindingTheCorrectRow)
 {
 	Field matchField;
 
-	matchField.CreateMockedField({ {{99},{34},{2},{104,5}} });
+	matchField.CreateMockedField({ {{99},{34},{2},{5}} });
 
 	EXPECT_EQ(matchField.findCorrectRow(100), 0);
 	EXPECT_EQ(matchField.findCorrectRow(98), 1);
@@ -207,10 +207,10 @@ TEST(TestField, FindingTheCorrectRow)
 	EXPECT_EQ(matchField.findCorrectRow(1), 5);
 	EXPECT_EQ(matchField.findCorrectRow(6), 3);
 
-	matchField.CreateMockedField({{{},{34},{},{104,5}}});
+	matchField.CreateMockedField({{{88},{34},{2},{5}}});
 
-	EXPECT_EQ(matchField.findCorrectRow(4), 0);
-	EXPECT_EQ(matchField.findCorrectRow(1), 0);
+	EXPECT_EQ(matchField.findCorrectRow(4), 2);
+	EXPECT_EQ(matchField.findCorrectRow(1), 5);
 	EXPECT_EQ(matchField.findCorrectRow(6), 3);
 	EXPECT_EQ(matchField.findCorrectRow(35), 1);
 
@@ -232,7 +232,7 @@ TEST(LowestCardBot, PlaceCard)
 	std::unique_ptr<Player> Bot(new LowestCardBot());
 	std::shared_ptr<Field> matchField(new Field);
 
-	Bot->createMockedHand({ {1,1},{104,1},{55,7} });
+	Bot->DrawHand({ {1,1},{104,1},{55,7} });
 
 	EXPECT_EQ(Bot->chooseCard(matchField).value,1);
 	EXPECT_EQ(Bot->mHand[0].value, 104);
@@ -244,7 +244,7 @@ TEST(HighestCardBot, PlaceCard)
 	std::unique_ptr<Player> Bot(new HighestCardBot());
 	std::shared_ptr<Field> matchField(new Field);
 
-	Bot->createMockedHand({ {1,1},{104,1},{55,7} });
+	Bot->DrawHand({ {1,1},{104,1},{55,7} });
 
 	EXPECT_EQ(Bot->chooseCard(matchField).value, 104);
 	EXPECT_EQ(Bot->mHand[0].value, 1);
@@ -253,15 +253,35 @@ TEST(HighestCardBot, PlaceCard)
 
 TEST(TestSmartBot, DeleteBadCards)
 {
-	std::unique_ptr<Player> Bot(new SmartBot());
+	std::unique_ptr<SmartBot> Bot(new SmartBot());
 	std::shared_ptr<Field> matchField(new Field);
 
-	matchField->CreateMockedField({ {{99},{34},{42},{104}} });
-	Bot->createMockedHand({ {1,1} });
+	matchField->CreateMockedField({ {{99},{34},{42},{24}} });
 
-	EXPECT_EQ(Bot->chooseCard(matchField).value, 1);
+	Bot->DrawHand({ {1,1} });
+	Bot->mGoodCardsInHand = Bot->mHand;
+	Bot->removeCardsThatLeadToCost(matchField);
+
+	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 0);
+
+	Bot->DrawHand({{2,1},{104,1}});
+	Bot->mGoodCardsInHand = Bot->mHand;
+	Bot->removeCardsThatLeadToCost(matchField);
+
+	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 1);
+	EXPECT_EQ(Bot->mGoodCardsInHand[0].value, 104);
+
+
+	matchField->CreateMockedField({ {{53,83,85},{4,8,21,38,82},{66,89},{84,100}} });
+
+	Bot->DrawHand({ {30,3},{79,1},{45,2},{46,1},{59,1},{33,1}});
+	Bot->mGoodCardsInHand = Bot->mHand;
+	Bot->removeCardsThatLeadToCost(matchField);
+
+	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 0);
 
 }
+
 TEST(BotvBot, SmartvHigh)
 {
 	std::shared_ptr<Player> SmartBot(new SmartBot());

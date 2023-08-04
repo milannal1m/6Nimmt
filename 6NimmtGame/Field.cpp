@@ -84,12 +84,8 @@ int Field::findCorrectRow(int value) const
 	int currentDiff = 105;
 
 	for (int i = 0; i < 4; i++) {
-		if (mPlayingField[i].size() == 0) {
 
-			if (i < currentRow) currentRow = i;
-
-		}
-		else if (mPlayingField[i].back().value < value && value - mPlayingField[i].back().value < currentDiff) {
+	if (mPlayingField[i].back().value < value && value - mPlayingField[i].back().value < currentDiff) {
 
 			currentDiff = value - mPlayingField[i].back().value;
 			currentRow = i;

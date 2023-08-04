@@ -58,8 +58,11 @@ int GameControl::startRound()
 
 	initField();
 
-	Player1->createMockedHand(mCardDealer->Draw(10));
-	Player2->createMockedHand(mCardDealer->Draw(10));
+	Player1->resetCost();
+	Player2->resetCost();
+
+	Player1->DrawHand(mCardDealer->Draw(10));
+	Player2->DrawHand(mCardDealer->Draw(10));
 
 	mCurrentRound = 0;
 

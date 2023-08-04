@@ -17,12 +17,14 @@ public:
 	~GameControl();
 
 	void startGame();
+
+
+private:
+
 	int startRound();
 	void placeCardLogic(GameCard Card, std::shared_ptr<Player> P);
 	std::shared_ptr<Player> initPlayer(std::string number);
 	void initField();
-
-private:
 
 	const std::shared_ptr<Dealer> mCardDealer;
 	std::shared_ptr<Field> mMatchField;

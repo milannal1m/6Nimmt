@@ -15,9 +15,10 @@ public:
 	virtual int chooseRow(std::shared_ptr<Field> matchField) const = 0;
 	int findCheapestRow(std::shared_ptr<Field> matchField) const;
 	void addCost(int cost);
+	void resetCost();
 	int getCost() const;
 	const std::string getName() const;
-	void createMockedHand(std::vector<GameCard> Hand);
+	void DrawHand(std::vector<GameCard> Hand);
 
 	bool mIsHumanPlayer = 0;
 

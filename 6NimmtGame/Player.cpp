@@ -36,6 +36,11 @@ void Player::addCost(int cost)
 	mCost += cost;
 }
 
+void Player::resetCost()
+{
+	mCost = 0;
+}
+
 int Player::getCost() const
 {
 	return mCost;
@@ -46,7 +51,7 @@ const std::string Player::getName() const
 	return mName;
 }
 
-void Player::createMockedHand(std::vector<GameCard> Hand)
+void Player::DrawHand(std::vector<GameCard> Hand)
 {
 	mHand.clear();
 	mHand = Hand;
