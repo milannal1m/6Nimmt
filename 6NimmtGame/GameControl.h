@@ -21,13 +21,13 @@ public:
 
 private:
 
-	int startRound();
-	void placeCardLogic(GameCard Card, std::shared_ptr<Player> P);
-	std::shared_ptr<Player> initPlayer(std::string number);
+	const int startRound();
+	void placeCardLogic(const GameCard Card, const std::shared_ptr<Player> P) const ;
+	const std::shared_ptr<Player> initPlayer(const std::string number);
 	void initField();
 
 	const std::shared_ptr<Dealer> mCardDealer;
-	std::shared_ptr<Field> mMatchField;
+	const std::shared_ptr<Field> mMatchField;
 	const std::shared_ptr<UI> mUI;
 	std::shared_ptr<Player> Player1;
 	std::shared_ptr<Player> Player2;
@@ -37,4 +37,6 @@ private:
 	friend class BotvBot_SmartvHigh_Test;
 	friend class BotvBot_SmartvLow_Test;
 	friend class BotvBot_SmartvRand_Test;
+	friend class BotvBot_SmartvSmartDiff_Test;
+
 };

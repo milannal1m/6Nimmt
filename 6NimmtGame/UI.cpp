@@ -23,12 +23,12 @@ std::string UI::userInput() const
 
 }
 
-void UI::outputMessage(std::string message) const
+void UI::outputMessage(const std::string message) const
 {
 	std::cout << message << std::endl;
 }
 
-void UI::printField(std::array<std::vector <GameCard>, 4> PlayingField) const
+void UI::printField(const std::array<std::vector <GameCard>, 4> PlayingField) const
 {
 
 	for (int i = 0; i < 4; i++) {
@@ -42,11 +42,11 @@ void UI::printField(std::array<std::vector <GameCard>, 4> PlayingField) const
 	}
 }
 
-void UI::printHand(std::vector<GameCard> mHand) const
+void UI::printHand(const std::vector<GameCard> Hand) const
 {
 	int i = 0;
 
-	for (const GameCard& n : mHand) {
+	for (const GameCard& n : Hand) {
 		i++;
 		std::cout << i << ". |" << (int)n.value << "(" << (int)n.cost << ")" << "| ";
 	}

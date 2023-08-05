@@ -12,7 +12,7 @@ Field::~Field()
 	clearField();
 }
 
-void Field::CreateMockedField(std::array<std::vector <int>, 4> mockedPlayingField)
+void Field::CreateMockedField(const std::array<std::vector <int>, 4> mockedPlayingField)
 {
 
 	GameCardCreator Creator;
@@ -30,17 +30,17 @@ void Field::CreateMockedField(std::array<std::vector <int>, 4> mockedPlayingFiel
 
 }
 
-std::array<std::vector<GameCard>, 4> Field::getPlayingField() const
+const std::array<std::vector<GameCard>, 4> Field::getPlayingField() const
 {
 	return mPlayingField;
 }
 
-void Field::placeCard(int row, GameCard Card)
+void Field::placeCard(const int row, const GameCard Card)
 {
 	mPlayingField[row].push_back(Card);
 }
 
-int Field::getCostOfRow(int row) const
+const int Field::getCostOfRow(const int row) const
 {
 	int cost = 0;
 
@@ -51,7 +51,7 @@ int Field::getCostOfRow(int row) const
 	return cost;
 }
 
-void Field::resetRow(int row, GameCard NewCard)
+void Field::resetRow(const int row, const GameCard NewCard)
 {
 	mPlayingField[row].clear();
 	mPlayingField[row].push_back(NewCard);
@@ -64,7 +64,7 @@ void Field::clearField()
 	}
 }
 
-bool Field::isFullRow(int row)
+const bool Field::isFullRow(const int row) const
 {
 	if (mPlayingField[row].size() == 6) {
 
@@ -76,7 +76,7 @@ bool Field::isFullRow(int row)
 	}
 }
 
-int Field::findCorrectRow(int value) const
+const int Field::findCorrectRow(const int value) const
 {
 	//returns the row in which the new Card belongs, returns 5 if the card doesnt fit any Row
 

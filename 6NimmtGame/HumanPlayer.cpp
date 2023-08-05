@@ -14,7 +14,7 @@ HumanPlayer::~HumanPlayer()
 {
 }
 
-GameCard HumanPlayer::chooseCard(std::shared_ptr<Field> matchField)
+GameCard HumanPlayer::chooseCard(const std::shared_ptr<Field> matchField)
 {
     
     mUI->outputMessage("\nDein Deck:");
@@ -25,7 +25,7 @@ GameCard HumanPlayer::chooseCard(std::shared_ptr<Field> matchField)
     std::string input = mUI->userInput();
     mUI->outputMessage("");
 
-    if (isdigit(input[0])) {
+    if (input[0]>47 && input[0]< 58) {
         int cardIndex = stoi(input)-1;
         if (cardIndex <= mHand.size()-1) {
             GameCard chosenGameCard = mHand[cardIndex];
@@ -45,7 +45,7 @@ GameCard HumanPlayer::chooseCard(std::shared_ptr<Field> matchField)
     }
 }
 
-int HumanPlayer::chooseRow(std::shared_ptr<Field> matchField) const
+int HumanPlayer::chooseRow(const std::shared_ptr<Field> matchField) const
 {
    
 
@@ -55,7 +55,7 @@ int HumanPlayer::chooseRow(std::shared_ptr<Field> matchField) const
     mUI->outputMessage("Nun musst du dir eine Reihe (1-4) aussuchen von der du alle Hornochsen eintuetest.");
     std::string input = mUI->userInput();
 
-    if (isdigit(input[0]) && stoi(input) < 5) {
+    if (input[0] > 47 && input[0] < 58 && stoi(input) < 5) {
 
         return stoi(input) - 1;
     }

@@ -11,7 +11,7 @@ HighestCardBot::~HighestCardBot()
 {
 }
 
-GameCard HighestCardBot::chooseCard(std::shared_ptr<Field> matchField)
+GameCard HighestCardBot::chooseCard(const std::shared_ptr<Field> matchField)
 {
 	GameCard HighestCard = { 0,0 };
 	for (const GameCard& Card : mHand) {
@@ -22,7 +22,7 @@ GameCard HighestCardBot::chooseCard(std::shared_ptr<Field> matchField)
 	return HighestCard;
 }
 
-int HighestCardBot::chooseRow(std::shared_ptr<Field> matchField) const
+int HighestCardBot::chooseRow(const std::shared_ptr<Field> matchField) const
 {
 	return findCheapestRow(matchField);
 }

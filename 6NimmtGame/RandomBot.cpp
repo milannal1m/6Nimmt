@@ -12,7 +12,7 @@ RandomBot::~RandomBot()
 {
 }
 
-GameCard RandomBot::chooseCard(std::shared_ptr<Field> matchField)
+GameCard RandomBot::chooseCard(const std::shared_ptr<Field> matchField)
 {
 	std::mt19937 mt1(time(nullptr));
 
@@ -24,7 +24,7 @@ GameCard RandomBot::chooseCard(std::shared_ptr<Field> matchField)
 	return RandCard;
 }
 
-int RandomBot::chooseRow(std::shared_ptr<Field> matchField) const
+int RandomBot::chooseRow(const std::shared_ptr<Field> matchField) const
 {
 	return findCheapestRow(matchField);
 }

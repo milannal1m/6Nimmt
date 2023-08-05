@@ -11,7 +11,7 @@ LowestCardBot::~LowestCardBot()
 {
 }
 
-GameCard LowestCardBot::chooseCard(std::shared_ptr<Field> matchField)
+GameCard LowestCardBot::chooseCard(const std::shared_ptr<Field> matchField)
 {
 	GameCard LowestCard = { 105,105 };
 	for (const GameCard& Card : mHand) {
@@ -22,7 +22,7 @@ GameCard LowestCardBot::chooseCard(std::shared_ptr<Field> matchField)
 	return LowestCard;
 }
 
-int LowestCardBot::chooseRow(std::shared_ptr<Field> matchField) const
+int LowestCardBot::chooseRow(const std::shared_ptr<Field> matchField) const
 {
 	return findCheapestRow(matchField);
 }

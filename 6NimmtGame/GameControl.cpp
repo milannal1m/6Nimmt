@@ -31,6 +31,8 @@ void GameControl::startGame()
 	mUI->outputMessage("[4] Random Card Bot");
 	mUI->outputMessage("___________________________");
 	mUI->outputMessage("[5] Smart Bot");
+	mUI->outputMessage("___________________________");
+	mUI->outputMessage("[6] Smart Bot(achtet auf Differenz)");
 	mUI->outputMessage("___________________________\n\n");
 
 	Player1 = initPlayer("1");
@@ -52,7 +54,7 @@ void GameControl::startGame()
 	}
 }
 
-int GameControl::startRound()
+const int GameControl::startRound()
 {
 	// returning 1 means Player1 won, returning 2 means Player 2 won, returning 0 means there was a draw
 
@@ -65,7 +67,7 @@ int GameControl::startRound()
 	Player2->DrawHand(mCardDealer->Draw(10));
 
 	mCurrentRound = 0;
-
+	
 	while (mCurrentRound != 10) {
 
 		mCurrentRound++;
@@ -106,7 +108,7 @@ int GameControl::startRound()
 	}
 }
 
-void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Player> P)
+void GameControl::placeCardLogic(const GameCard Card, const std::shared_ptr<Player> P) const
 {
 	int row = mMatchField->findCorrectRow(Card.value);
 	int cost = 0;
@@ -126,7 +128,7 @@ void GameControl::placeCardLogic(GameCard Card, std::shared_ptr<Player> P)
 	P->addCost(cost);
 }
 
-std::shared_ptr<Player> GameControl::initPlayer(std::string number)
+const std::shared_ptr<Player> GameControl::initPlayer(const std::string number)
 {
 	std::string mode;
 	std::string message;
@@ -137,25 +139,29 @@ std::shared_ptr<Player> GameControl::initPlayer(std::string number)
 	mode = mUI->userInput();
 
 	if (mode == "1") {
-		std::shared_ptr<Player> P(new HumanPlayer());
-		return P;
+
+		return std::make_shared<HumanPlayer>();
 
 	}
 	else if (mode == "2") {
-		std::shared_ptr<Player> P(new LowestCardBot());
-		return P;
+
+		return std::make_shared<LowestCardBot>();
 	}
 	else if (mode == "3") {
-		std::shared_ptr<Player> P(new HighestCardBot());
-		return P;
+
+		return std::make_shared<HighestCardBot>();
 	}
 	else if (mode == "4") {
-		std::shared_ptr<Player> P(new RandomBot());
-		return P;
+
+		return std::make_shared<RandomBot>();
 	}
 	else if (mode == "5") {
-		std::shared_ptr<Player> P(new SmartBot());
-		return P;
+
+		return std::make_shared<SmartBot>(false);
+	}
+	else if (mode == "6") {
+
+		return std::make_shared<SmartBot>(true);
 	}
 	else {
 		mUI->outputMessage("\nDiesen Modus gibt es nicht, versuchen wir es noch einmal.");

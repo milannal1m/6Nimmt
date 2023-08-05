@@ -13,14 +13,14 @@ public:
 	Field();
 	~Field();
 
-	void CreateMockedField(std::array<std::vector <int>, 4> mockedPlayingField);
-	std::array<std::vector <GameCard>, 4> getPlayingField() const;
-	void placeCard(int row, GameCard Card);
-	int getCostOfRow(int row) const;
-	void resetRow(int row, GameCard NewCard);
+	void CreateMockedField(const std::array<std::vector <int>, 4> mockedPlayingField);
+	const std::array<std::vector <GameCard>, 4> getPlayingField() const;
+	void placeCard(const int row,const  GameCard Card);
+	const int getCostOfRow(const int row) const;
+	void resetRow(const int row, const GameCard NewCard);
 	void clearField();
-	bool isFullRow(int row);
-	int findCorrectRow(int value) const;
+	const bool isFullRow(const int row) const;
+	const int findCorrectRow(const int value) const;
 
 private:
 	std::array<std::vector <GameCard>,4> mPlayingField;

@@ -12,9 +12,9 @@ public:
 	~UI();
 
 	std::string userInput() const;
-	void outputMessage(std::string message) const;
-	void printField(std::array<std::vector <GameCard>, 4> PlayingField) const;
-	void printHand(std::vector<GameCard> mHand) const;
+	void outputMessage(const std::string message) const;
+	void printField(const std::array<std::vector <GameCard>, 4> PlayingField) const;
+	void printHand(const std::vector<GameCard> mHand) const;
 
 };
 

@@ -216,7 +216,7 @@ TEST(TestField, FindingTheCorrectRow)
 
 }
 
-TEST(Bot, FindCheapestRow)
+TEST(TestBot, FindCheapestRow)
 {
 	std::shared_ptr<Field> matchField(new Field);
 	std::unique_ptr<Player> Bot(new LowestCardBot());
@@ -227,7 +227,7 @@ TEST(Bot, FindCheapestRow)
 
 }
 
-TEST(LowestCardBot, PlaceCard) 
+TEST(TestLowestCardBot, PlaceCard) 
 {
 	std::unique_ptr<Player> Bot(new LowestCardBot());
 	std::shared_ptr<Field> matchField(new Field);
@@ -239,7 +239,7 @@ TEST(LowestCardBot, PlaceCard)
 
 }
 
-TEST(HighestCardBot, PlaceCard)
+TEST(TestHighestCardBot, PlaceCard)
 {
 	std::unique_ptr<Player> Bot(new HighestCardBot());
 	std::shared_ptr<Field> matchField(new Field);
@@ -253,46 +253,79 @@ TEST(HighestCardBot, PlaceCard)
 
 TEST(TestSmartBot, DeleteBadCards)
 {
-	std::unique_ptr<SmartBot> Bot(new SmartBot());
+	SmartBot Bot(false);
 	std::shared_ptr<Field> matchField(new Field);
 
 	matchField->CreateMockedField({ {{99},{34},{42},{24}} });
 
-	Bot->DrawHand({ {1,1} });
-	Bot->mGoodCardsInHand = Bot->mHand;
-	Bot->removeCardsThatLeadToCost(matchField);
+	Bot.DrawHand({ {1,1} });
+	Bot.mGoodCardsInHand = Bot.mHand;
+	Bot.removeCardsThatLeadToCost(matchField);
 
-	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 0);
+	EXPECT_EQ(Bot.mGoodCardsInHand.size(), 0);
 
-	Bot->DrawHand({{2,1},{104,1}});
-	Bot->mGoodCardsInHand = Bot->mHand;
-	Bot->removeCardsThatLeadToCost(matchField);
+	Bot.DrawHand({{2,1},{104,1}});
+	Bot.mGoodCardsInHand = Bot.mHand;
+	Bot.removeCardsThatLeadToCost(matchField);
 
-	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 1);
-	EXPECT_EQ(Bot->mGoodCardsInHand[0].value, 104);
+	EXPECT_EQ(Bot.mGoodCardsInHand.size(), 1);
+	EXPECT_EQ(Bot.mGoodCardsInHand[0].value, 104);
 
 
 	matchField->CreateMockedField({ {{53,83,85},{4,8,21,38,82},{66,89},{84,100}} });
 
-	Bot->DrawHand({ {30,3},{79,1},{45,2},{46,1},{59,1},{33,1}});
-	Bot->mGoodCardsInHand = Bot->mHand;
-	Bot->removeCardsThatLeadToCost(matchField);
+	Bot.DrawHand({ {30,3},{79,1},{45,2},{46,1},{59,1},{33,1}});
+	Bot.mGoodCardsInHand = Bot.mHand;
+	Bot.removeCardsThatLeadToCost(matchField);
 
-	EXPECT_EQ(Bot->mGoodCardsInHand.size(), 0);
+	EXPECT_EQ(Bot.mGoodCardsInHand.size(), 0);
 
 }
 
-TEST(BotvBot, SmartvHigh)
+TEST(TestSmartBot, FindingTheLowestCard)
 {
-	std::shared_ptr<Player> SmartBot(new SmartBot());
-	std::shared_ptr<Player> HighCardBot(new HighestCardBot());
+	SmartBot Bot(false);
+	std::vector<GameCard> Hand = { {3,1},{5,2},{33,5} };
+
+	EXPECT_EQ(Bot.Lowestcard(Hand).value, 3);
+}
+
+TEST(TestSmartBot, FindingCardThatGoesShortestRow)
+{
+	SmartBot Bot(false);
 	std::shared_ptr<Field> matchField(new Field);
 
+	matchField->CreateMockedField({ {{53,83,85},{4,8,21,38,82},{66,89},{84,100,101,103}} });
+
+	std::vector<GameCard> Hand = { {104,1},{86,1},{83,1},{90,3},{91,1} };
+
+	EXPECT_EQ(Bot.CardThatGoesShortestRow(matchField,Hand).value, 90);
+}
+
+TEST(TestSmartBot, ChoosingCard) 
+{
+	SmartBot Bot(false);
+	std::shared_ptr<Field> matchField(new Field);
+
+	matchField->CreateMockedField({ {{53,83,85},{4,8,21,38,82},{66,89},{84,100,101,103}} });
+
+	Bot.DrawHand({{2,1},{86,1},{104,1},{99,1},{5,2},{17,1},{90,1}});
+
+	EXPECT_EQ(Bot.chooseCard(matchField).value, 99);
+
+	Bot.DrawHand({ {2,1},{14,1},{1,1},{5,2},{17,1}});
+
+	EXPECT_EQ(Bot.chooseCard(matchField).value, 1);
+}
+
+bool considerLowestDiff = false;
+
+TEST(BotvBot, SmartvHigh)
+{
 	GameControl Controller;
 
-	Controller.Player1 = HighCardBot;
-	Controller.Player2 = SmartBot;
-	Controller.mMatchField = matchField;
+	Controller.Player1 = std::make_shared<HighestCardBot>();
+	Controller.Player2 = std::make_shared<SmartBot>(considerLowestDiff);;
 
 	float player2 = 0;
 
@@ -303,22 +336,16 @@ TEST(BotvBot, SmartvHigh)
 		}
 	}
 	std::cout << player2/(float)10 << "%" << std::endl;
-	std::cout << player2 << std::endl;
 
 	EXPECT_TRUE(player2/(float)1000 >= 0.8);
 }
 
 TEST(BotvBot, SmartvLow)
 {
-	std::shared_ptr<Player> SmartBot(new SmartBot());
-	std::shared_ptr<Player> LowestCardBot(new LowestCardBot());
-	std::shared_ptr<Field> matchField(new Field);
-
 	GameControl Controller;
 
-	Controller.Player1 = LowestCardBot;
-	Controller.Player2 = SmartBot;
-	Controller.mMatchField = matchField;
+	Controller.Player1 = std::make_shared<LowestCardBot>();
+	Controller.Player2 = std::make_shared<SmartBot>(considerLowestDiff);
 
 	float player2 = 0;
 
@@ -329,22 +356,16 @@ TEST(BotvBot, SmartvLow)
 		}
 	}
 	std::cout << player2 / (float)10 << "%" << std::endl;
-	std::cout << player2 << std::endl;
 
 	EXPECT_TRUE(player2 / (float)1000 >= 0.8);
 }
 
 TEST(BotvBot, SmartvRand)
 {
-	std::shared_ptr<Player> SmartBot(new SmartBot());
-	std::shared_ptr<Player> RandomBot(new RandomBot());
-	std::shared_ptr<Field> matchField(new Field);
-
 	GameControl Controller;
 
-	Controller.Player1 = RandomBot;
-	Controller.Player2 = SmartBot;
-	Controller.mMatchField = matchField;
+	Controller.Player1 = std::make_shared<RandomBot>();
+	Controller.Player2 = std::make_shared<SmartBot>(considerLowestDiff);
 
 	float player2 = 0;
 
@@ -355,7 +376,36 @@ TEST(BotvBot, SmartvRand)
 		}
 	}
 	std::cout << player2 / (float)10 << "%" << std::endl;
-	std::cout << player2 << std::endl;
 
 	EXPECT_TRUE(player2 / (float)1000 >= 0.8);
+}
+
+TEST(BotvBot, SmartvSmartDiff)
+{
+	GameControl Controller;
+
+	Controller.Player1 = std::make_shared<SmartBot>(true);
+
+	Controller.Player2 = std::make_shared<SmartBot>(false);
+
+	float player2 = 0;
+	float player1 = 0;
+
+	for (int i = 0; i < 1000; i++) {
+		int winner = Controller.startRound();
+		if (winner == 2) {
+			player2++;
+		}
+		else if (winner == 1) {
+			player1++;
+		}
+	}
+	
+	if(player1 > player2){
+		std::cout << std::endl << "SmartBot der Differenzen beruecksichtigt gewinnt " << player1 << ":" << player2 << std::endl << std::endl;
+	}
+	else {
+		std::cout << std::endl << "SmartBot der keine Differenzen beruecksichtigt gewinnt " << player2 << ":" << player1 << std::endl << std::endl;
+	}
+
 }

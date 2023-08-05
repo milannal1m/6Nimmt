@@ -10,7 +10,7 @@ public:
     RandomBot();
     ~RandomBot();
 
-    GameCard chooseCard(std::shared_ptr<Field> matchField) override;
-    int chooseRow(std::shared_ptr<Field> matchField) const override;
+    GameCard chooseCard(const std::shared_ptr<Field> matchField) override;
+    int chooseRow(const std::shared_ptr<Field> matchField) const override;
 };
 

@@ -14,7 +14,7 @@ Player::~Player()
 	mHand.clear();
 }
 
-int Player::findCheapestRow(std::shared_ptr<Field> matchField) const
+const int Player::findCheapestRow(const std::shared_ptr<Field> matchField) const
 {
 	int lowestCostRow = 5;
 	int currentCost = 500;
@@ -31,7 +31,7 @@ int Player::findCheapestRow(std::shared_ptr<Field> matchField) const
 	return lowestCostRow;
 }
 
-void Player::addCost(int cost)
+void Player::addCost(const int cost)
 {
 	mCost += cost;
 }
@@ -51,7 +51,7 @@ const std::string Player::getName() const
 	return mName;
 }
 
-void Player::DrawHand(std::vector<GameCard> Hand)
+void Player::DrawHand(const std::vector<GameCard> Hand)
 {
 	mHand.clear();
 	mHand = Hand;

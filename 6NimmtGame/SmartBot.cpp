@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "SmartBot.h"
 #include "iostream"
-SmartBot::SmartBot():Player()
+SmartBot::SmartBot(bool considerLowestDiff):
+	Player(),
+	mConsiderLowestDiff(considerLowestDiff)
 {
 	mName = "SmartBot" + std::to_string(mPlayerCount);
 	mIsHumanPlayer = false;
@@ -11,40 +13,51 @@ SmartBot::~SmartBot()
 {
 }
 
-GameCard SmartBot::chooseCard(std::shared_ptr<Field> matchField)
+GameCard SmartBot::chooseCard(const std::shared_ptr<Field> matchField)
 {
 
 	mGoodCardsInHand = mHand;
 
 	removeCardsThatLeadToCost(matchField);
 
-	//mTempCards = mGoodCardsInHand;
+	if (mConsiderLowestDiff) {
 
-	//removeCardsThatWontGoShortestRow(matchField);
+		mTempHand = mGoodCardsInHand;
+
+		removeCardsThatWontGoShortestRow(matchField);
+
+	}
+
 
 	if (!mGoodCardsInHand.empty()) {
 
-		GameCard Card = CardThatGoesShortestRow(matchField);  //CardWithLowestDiff(matchField); //CardThatGoesShortestRow(matchField);//RandomCard(mGoodCardsInHand)
+		GameCard Card;
 
+		if (mConsiderLowestDiff) {
+			Card = CardWithLowestDiff(matchField, mGoodCardsInHand);
+		}
+		else {
+			Card = CardThatGoesShortestRow(matchField, mGoodCardsInHand);
+		}
 		mHand.erase(std::remove(mHand.begin(), mHand.end(), Card), mHand.end());
 		
 		return Card;
 	}
 	else {
 
-		GameCard Card = LowestCard(mHand);
+		GameCard Card = Lowestcard(mHand);
 		mHand.erase(std::remove(mHand.begin(), mHand.end(), Card), mHand.end());
 		
 		return Card;
 	}
 }
 
-int SmartBot::chooseRow(std::shared_ptr<Field> matchField) const
+int SmartBot::chooseRow(const std::shared_ptr<Field> matchField) const
 {
 	return findCheapestRow(matchField);
 }
 
-void SmartBot::removeCardsThatLeadToCost(std::shared_ptr<Field> matchField)
+void SmartBot::removeCardsThatLeadToCost(const std::shared_ptr<Field> matchField)
 {
 	for (const GameCard& Card : mHand) {
 
@@ -57,13 +70,13 @@ void SmartBot::removeCardsThatLeadToCost(std::shared_ptr<Field> matchField)
 	}
 }
 
-void SmartBot::removeCardsThatWontGoShortestRow(std::shared_ptr<Field> matchField)
+void SmartBot::removeCardsThatWontGoShortestRow(const std::shared_ptr<Field> matchField)
 {
 	int shortestRowSizeInHand = findShortestRowSizeInHand(matchField, mGoodCardsInHand);
 	int currentRowSize = 0;
 	int row = 0;
 	
-	for (const GameCard& Card : mTempCards) {
+	for (const GameCard& Card : mTempHand) {
 
 		row = matchField->findCorrectRow(Card.value);
 		currentRowSize = matchField->getPlayingField()[row].size();
@@ -73,15 +86,15 @@ void SmartBot::removeCardsThatWontGoShortestRow(std::shared_ptr<Field> matchFiel
 	}
 }
 
-GameCard SmartBot::CardWithLowestDiff(std::shared_ptr<Field> matchField)
+GameCard SmartBot::CardWithLowestDiff(const std::shared_ptr<Field> matchField, const std::vector<GameCard>Hand)
 {
 	int currentDiff = 105;
 	int LastCardInRowValue = 0;
 	int Diff = 0;
 	int row = 0;
-	GameCard CurrentGameCard = RandomCard(mGoodCardsInHand);
+	GameCard CurrentGameCard = RandomCard(Hand);
 
-	for (const GameCard& Card : mGoodCardsInHand) {
+	for (const GameCard& Card : Hand) {
 		row = matchField->findCorrectRow(Card.value);
 
 			if (!matchField->getPlayingField()[row].empty()) {
@@ -98,14 +111,14 @@ GameCard SmartBot::CardWithLowestDiff(std::shared_ptr<Field> matchField)
 	return CurrentGameCard;
 }
 
-GameCard SmartBot::CardThatGoesShortestRow(std::shared_ptr<Field> matchField)
+GameCard SmartBot::CardThatGoesShortestRow(const std::shared_ptr<Field> matchField, const std::vector<GameCard>Hand)
 {
 	int rowSize = 0;
 	int row = 0;
 	int currentShortestRowSize = 7;
-	GameCard ShortestRowCard = RandomCard(mGoodCardsInHand);
+	GameCard ShortestRowCard = RandomCard(Hand);
 
-	for (const GameCard& Card : mGoodCardsInHand) {
+	for (const GameCard& Card : Hand) {
 
 		row = matchField->findCorrectRow(Card.value);
 
@@ -121,7 +134,7 @@ GameCard SmartBot::CardThatGoesShortestRow(std::shared_ptr<Field> matchField)
 	return ShortestRowCard;
 }
 
-int SmartBot::findShortestRowSizeInHand(std::shared_ptr<Field> matchField, std::vector<GameCard> Hand)
+int SmartBot::findShortestRowSizeInHand(const std::shared_ptr<Field> matchField, const std::vector<GameCard> Hand)
 {
 	int rowSize = 0;
 	int row = 0;
@@ -141,7 +154,7 @@ int SmartBot::findShortestRowSizeInHand(std::shared_ptr<Field> matchField, std::
 	return currentShortestRowSize;
 }
 
-GameCard SmartBot::RandomCard(std::vector<GameCard>Hand)
+GameCard SmartBot::RandomCard(const std::vector<GameCard>Hand)
 {
 	std::mt19937 mt1(time(nullptr));
 	int randIndex = abs((int)mt1()) % Hand.size();
@@ -149,7 +162,7 @@ GameCard SmartBot::RandomCard(std::vector<GameCard>Hand)
 
 }
 
-GameCard SmartBot::LowestCard(std::vector<GameCard> Hand)
+GameCard SmartBot::Lowestcard(const std::vector<GameCard> Hand)
 {
 	GameCard LowestCard = RandomCard(Hand);
 
