@@ -10,3 +10,5 @@ führt dies sowohl zu einer erhöhten Gewinnchance der Smarten Bots gegen die Pr
 Diese Parameter lassen sich in der GameControl auf Zeile 66,67 und 71 in der Funktion startGame() ändern.
 
 Die Ergebnisse der BotvsBot Durchläufe bei 10 und 52 Runden wurden als png in dieses Git hohgeladen.
+
+Nach dem Klonen des Git Repositorys muss lediglich wahlweise entweder 6Nimmt oder GameTest oder beides als Startprojekt ausgewählt werden
