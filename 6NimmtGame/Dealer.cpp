@@ -40,11 +40,13 @@ void Dealer::ShuffleCards()
 std::vector<GameCard> Dealer::ExecuteDraw(int numberOfCards)
 {
     std::vector<GameCard> result;
+
     for (int i = 0; i < numberOfCards; i++)
     {
         result.push_back(mGameCards.back());
         mGameCards.pop_back();
     }
+
     return result;
 }
 

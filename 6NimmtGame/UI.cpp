@@ -9,7 +9,7 @@ UI::~UI()
 {
 }
 
-std::string UI::userInput() const
+const std::string UI::userInput() const
 {
 
 	std::string output;
@@ -31,13 +31,17 @@ void UI::outputMessage(const std::string message) const
 void UI::printField(const std::array<std::vector <GameCard>, 4> PlayingField) const
 {
 
-	for (int i = 0; i < 4; i++) {
-		for (const GameCard &Card: PlayingField[i]) {
+	for (int i = 0; i < 4; i++) 
+	{
+		for (const GameCard &Card: PlayingField[i]) 
+		{
 			std::cout << " |  " << (int) Card.value << "(" << (int) Card.cost << ")" << "  | ";
 		}
-		for (int m = 0; m < 6 - PlayingField[i].size(); m++) {
+		for (int m = 0; m < 6 - PlayingField[i].size(); m++) 
+		{
 			std::cout << " |        | ";
 		}
+
 		std::cout << std::endl << std::endl;
 	}
 }
@@ -46,9 +50,11 @@ void UI::printHand(const std::vector<GameCard> Hand) const
 {
 	int i = 0;
 
-	for (const GameCard& n : Hand) {
+	for (const GameCard& n : Hand) 
+	{
 		i++;
 		std::cout << i << ". |" << (int)n.value << "(" << (int)n.cost << ")" << "| ";
 	}
+
 	std::cout << std::endl;
 }

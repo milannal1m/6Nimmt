@@ -6,6 +6,6 @@ int main() {
 
 	GameControl Controller;
 
-	Controller.startGame();
+	Controller.startHumanControlledGame();
 
 }

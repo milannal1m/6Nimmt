@@ -19,10 +19,12 @@ const int Player::findCheapestRow(const std::shared_ptr<Field> matchField) const
 	int lowestCostRow = 5;
 	int currentCost = 500;
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) 
+	{
 		int cost = matchField->getCostOfRow(i);
-		if (cost < currentCost) {
 
+		if (cost < currentCost) 
+		{
 			lowestCostRow = i;
 			currentCost = cost;
 		}
@@ -41,7 +43,7 @@ void Player::resetCost()
 	mCost = 0;
 }
 
-int Player::getCost() const
+const int Player::getCost() const
 {
 	return mCost;
 }
