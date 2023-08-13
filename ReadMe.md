@@ -3,7 +3,8 @@ Sie wählen die Karte, die in die kürzest mögliche Reihe geht und keine Punkte
 Der SmartBot der mit dem Parameter True initialisiert wird, wählt, wenn es mehrere Karten gibt, die in die kürzest mögliche Reihe gehen, die mit der kleinsten Differenz aus
 
 Bei einem Spiel mit 10 Karten pro Spieler und 10 Runden, schneidet der Bot mit dem Parameter False besser gegen die primitiven Bots ab.
-Bei einem Spiel zwischen den beiden Smarten Bots ist das Ergebnis oft ausgeglichen 
+Bei einem Spiel zwischen den beiden Smarten Bots ist das Ergebnis oft ausgeglichen.
 
 Erhöht man jedoch die Anzahl der Karten pro Spieler oder sowohl die Anzahl der Karten und die Anzahl der Runden (aber nie nur die Rundenzahl)
-führt dies sowohl zu einer erhöhten Gewinnchance der Smarten Bots gegen die Primitven, als auch dazu, dass der Smartbot(true) mit einer hohen Chance gegen den SmartBot(false) gewinnt 
+führt dies sowohl zu einer erhöhten Gewinnchance der Smarten Bots gegen die Primitven, als auch dazu, dass der Smartbot(true) mit einer hohen Chance gegen den SmartBot(false) gewinnt.
+Diese Parameter lassen sich in der GameControl auf Zeile 66,67 und 71 in der Funktion startGame() ändern.
